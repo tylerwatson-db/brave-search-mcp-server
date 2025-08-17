@@ -112,6 +112,20 @@ Generates AI-powered summaries from web search results using Brave's summarizati
 4. **Run the server**: `BRAVE_API_KEY=your_api_key_here npm start`
 5. **Open the web interface**: Visit `http://localhost:8080/` in your browser
 
+### Databricks Apps Deployment
+
+For Databricks Apps deployment, use the simplified app structure:
+
+```bash
+# Build the project
+npm run build
+
+# Run with Databricks-compatible app.js
+BRAVE_API_KEY=your_api_key_here npm run start:app
+```
+
+The `app.js` file follows the [Databricks Node.js app tutorial](https://docs.databricks.com/aws/en/dev-tools/databricks-apps/tutorial-node) pattern for easier deployment.
+
 ### Environment Variables
 
 The server supports the following environment variables:

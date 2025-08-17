@@ -13,7 +13,7 @@ type Configuration = {
 
 const state: Configuration & { ready: boolean } = {
   transport: 'http',
-  port: 8080,
+  port: parseInt(process.env.PORT || '8080'),
   host: '0.0.0.0',
   braveApiKey: process.env.BRAVE_API_KEY ?? '',
   loggingLevel: 'info',
@@ -28,7 +28,7 @@ export function getOptions(): Configuration | false {
     .option(
       '--port <number>',
       'desired port for HTTP transport',
-      process.env.BRAVE_MCP_PORT ?? '8080'
+      process.env.PORT ?? process.env.BRAVE_MCP_PORT ?? '8080'
     )
     .option(
       '--host <string>',

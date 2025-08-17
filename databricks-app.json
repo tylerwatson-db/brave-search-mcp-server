@@ -1,0 +1,22 @@
+{
+  "name": "brave-search-app",
+  "description": "Brave Search web interface with MCP server capabilities",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "env": {
+    "PORT": "8000",
+    "BRAVE_API_KEY": "YOUR_API_KEY_HERE"
+  },
+  "endpoints": {
+    "/": "Web interface",
+    "/search": "Search API endpoint",
+    "/health": "Health check",
+    "/mcp": "MCP compatibility endpoint"
+  }
+}

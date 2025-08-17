@@ -107,6 +107,14 @@ export const createApp = () => {
     res.status(200).json({ message: 'pong' });
   });
 
+  app.get('/health', (req: Request, res: Response) => {
+    res.status(200).json({ 
+      status: 'healthy', 
+      timestamp: new Date().toISOString(),
+      version: '1.3.5'
+    });
+  });
+
   return app;
 };
 
