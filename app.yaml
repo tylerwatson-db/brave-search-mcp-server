@@ -1,9 +1,8 @@
 command: ["node", "dist/index.js", "--transport", "http", "--port", "8080", "--host", "0.0.0.0"]
 env:
   - name: BRAVE_API_KEY
-    # valueFrom: "secret"
-    # key: "brave-api-key"
-    value: "BSATpVvbObo2V8IVewHsLo9xGE1i8Bf"
+    valueFrom: "brave-api-key"
+    # value: "BSATpVvbObo2V8IVewHsLo9xGE1i8Bf"
   - name: BRAVE_MCP_TRANSPORT  
     value: "http"
   - name: BRAVE_MCP_PORT
