@@ -1,9 +1,12 @@
 import { randomUUID } from 'node:crypto';
-import express, { type Request, type Response } from 'express';
+import express, { type Request, type Response, type RequestHandler } from 'express';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import config from '../config.js';
 import { mcpServer } from '../server.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { isInitializeRequest, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import BraveAPI from '../BraveAPI/index.js';
 
 const yieldGenericServerError = (res: Response) => {
   res.status(500).json({
@@ -46,13 +49,47 @@ export const getTransport = async (request: Request): Promise<StreamableHTTPServ
     return transport;
   }
 
-  throw new Error('Invalid request: must be an initialization request, include a valid session ID, or be a ListTools method request');
+  throw new Error(
+    'Invalid request: must be an initialization request, include a valid session ID, or be a ListTools method request'
+  );
 };
 
 export const createApp = () => {
   const app = express();
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
 
   app.use(express.json());
+  app.use(express.static(path.join(__dirname, '../public')));
+
+  // Serve the main page
+  app.get('/', (req: Request, res: Response) => {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
+  });
+
+  // Search endpoint
+  const searchHandler: RequestHandler = async (req, res) => {
+    try {
+      const { query } = req.body;
+
+      if (!query || typeof query !== 'string') {
+        res.status(400).json({ error: 'Query is required and must be a string' });
+        return;
+      }
+
+      const searchResults = await BraveAPI.issueRequest('web', {
+        query: query,
+        count: 10,
+      });
+
+      res.json(searchResults);
+    } catch (error) {
+      console.error('Search error:', error);
+      res.status(500).json({ error: 'Search failed. Please try again.' });
+    }
+  };
+
+  app.post('/search', searchHandler);
 
   app.all('/mcp', async (req: Request, res: Response) => {
     try {
@@ -83,6 +120,7 @@ export const start = () => {
 
   app.listen(config.port, config.host, () => {
     console.error(`Server is running on http://${config.host}:${config.port}/mcp`);
+    console.error(`Front-end available at http://${config.host}:${config.port}/`);
   });
 };
 

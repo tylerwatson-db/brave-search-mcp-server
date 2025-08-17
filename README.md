@@ -2,6 +2,16 @@
 
 An MCP server implementation that integrates the Brave Search API, providing comprehensive search capabilities including web search, local business search, image search, video search, news search, and AI-powered summarization. This project supports both HTTP and STDIO transports, with HTTP as the default mode.
 
+## Web Interface
+
+The server includes a simple web interface for easy searching. When running in HTTP mode, you can access the front-end at the root URL:
+
+- **URL**: `http://localhost:8080/` (or your configured host/port)
+- **Features**: Clean, modern interface with search input and results display
+- **Usage**: Simply enter your search query and press Enter or click Search
+
+The web interface provides a user-friendly way to test the Brave Search API without needing to use the MCP protocol directly.
+
 ## Tools
 
 ### Web Search (`brave_web_search`)
@@ -93,6 +103,14 @@ Generates AI-powered summaries from web search results using Brave's summarizati
    - **Free**: 2,000 queries/month, basic web search
    - **Pro**: Enhanced features including local search, AI summaries, extra snippets
 3. Generate your API key from the [developer dashboard](https://api-dashboard.search.brave.com/app/keys)
+
+## Quick Start
+
+1. **Get your API key**: Sign up at [Brave Search API](https://brave.com/search/api/) and get your API key
+2. **Install dependencies**: `npm install`
+3. **Build the project**: `npm run build`
+4. **Run the server**: `BRAVE_API_KEY=your_api_key_here npm start`
+5. **Open the web interface**: Visit `http://localhost:8080/` in your browser
 
 ### Environment Variables
 
