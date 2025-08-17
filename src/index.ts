@@ -4,6 +4,11 @@ import { stdioServer, httpServer } from './protocols/index.js';
 
 async function main() {
   const options = getOptions();
+  
+  const port = Number(process.env.PORT) || Number(process.env.BRAVE_MCP_PORT) || 8080;
+server.listen(port, '0.0.0.0', () => {
+  console.log(`Server listening on ${port}`);
+});
 
   if (!options) {
     console.error('Invalid configuration');
