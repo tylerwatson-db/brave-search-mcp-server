@@ -5,7 +5,11 @@ import { fileURLToPath } from 'url';
 import config from '../config.js';
 import createMcpServer from '../server.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
-import { isInitializeRequest, ListToolsRequest, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import {
+  isInitializeRequest,
+  ListToolsRequest,
+  ListToolsRequestSchema,
+} from '@modelcontextprotocol/sdk/types.js';
 import BraveAPI from '../BraveAPI/index.js';
 
 const yieldGenericServerError = (res: Response) => {
@@ -92,6 +96,11 @@ const createApp = () => {
 
   app.all('/mcp', async (req: Request, res: Response) => {
     try {
+      // Ensure the client accepts text/event-stream
+      if (!req.headers.accept || !req.headers.accept.includes('text/event-stream')) {
+        req.headers.accept = 'text/event-stream';
+      }
+      
       const transport = await getTransport(req);
       await transport.handleRequest(req, res, req.body);
     } catch (error) {
@@ -107,10 +116,10 @@ const createApp = () => {
   });
 
   app.get('/health', (req: Request, res: Response) => {
-    res.status(200).json({ 
-      status: 'healthy', 
+    res.status(200).json({
+      status: 'healthy',
       timestamp: new Date().toISOString(),
-      version: '1.3.5'
+      version: '1.3.5',
     });
   });
 

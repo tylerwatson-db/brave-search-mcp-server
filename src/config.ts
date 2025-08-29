@@ -54,9 +54,11 @@ export function getOptions(): Configuration | false {
     return false;
   }
 
-  if (!options.braveApiKey) {
+  // Check for braveApiKey in both command line args and environment
+  const braveApiKey = options.braveApiKey || process.env.BRAVE_API_KEY;
+  if (!braveApiKey) {
     console.error(
-      'Error: --brave-api-key is required. You can get one at https://brave.com/search/api/.'
+      'Error: Brave API key is required. Set BRAVE_API_KEY environment variable or use --brave-api-key argument. You can get one at https://brave.com/search/api/.'
     );
     return false;
   }
@@ -76,7 +78,7 @@ export function getOptions(): Configuration | false {
   }
 
   // Update state
-  state.braveApiKey = options.braveApiKey;
+  state.braveApiKey = braveApiKey;
   state.transport = options.transport;
   state.port = options.port;
   state.host = options.host;
